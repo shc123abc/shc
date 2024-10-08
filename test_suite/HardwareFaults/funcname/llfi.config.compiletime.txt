@@ -1,0 +1,4 @@
+failure_class=HardwareFault
+failure_mode=SpecifiedFunctions
+targets=flow_cost()/flow_org_cost()/getfree()/primal_feasible()/refresh_potential()
+injector=<fi_type>

@@ -5,19 +5,20 @@
 rm -rf ./llfi*
 
 fname=$1
+fname=sumtest
 
 # Generate Makefile
-$LLFI_BUILD_ROOT/tools/GenerateMakefile --readable --all -o "$fname.ll"
+python ../../../build/tools/GenerateMakefile --readable --all -o "$fname.ll"
 make
 
 # Instrument it
-$LLFI_BUILD_ROOT/bin/instrument --readable "$fname.ll"
+python ../../../build/bin/instrument.py --readable "$fname.ll"
 
 # Call the profiling script
 shift
-$LLFI_BUILD_ROOT/bin/profile ./llfi/"$fname-profiling.exe" $@
+python ../../../build/bin/profile ./llfi/"$fname-profiling.exe" 5
 
 # Inject the faults
-$LLFI_BUILD_ROOT/bin/injectfault ./llfi/"$fname-faultinjection.exe" $@
+python ../../../bin/injectfault.py ./llfi/"$fname-faultinjection.exe" 5 
 
 echo "Done injecting faults"

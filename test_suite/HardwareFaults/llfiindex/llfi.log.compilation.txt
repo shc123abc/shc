@@ -1,0 +1,14 @@
+
+
+Start of a pass
+LLFI cannot inject faults in destination reg of   br label %cond.end, !llfi_index !101
+The selected instruction   br label %cond.end, !llfi_index !101does not have any valid registers for fault injection
+LLFI cannot inject faults in destination reg of   store ptr %43, ptr %basic_arc13, align 8, !llfi_index !111
+The selected instruction   store ptr %43, ptr %basic_arc13, align 8, !llfi_index !111does not have any valid registers for fault injection
+
+
+Start of a pass
+LLFI cannot inject faults in destination reg of   br label %cond.end, !llfi_index !101
+The selected instruction   br label %cond.end, !llfi_index !101does not have any valid registers for fault injection
+LLFI cannot inject faults in destination reg of   store ptr %43, ptr %basic_arc13, align 8, !llfi_index !111
+The selected instruction   store ptr %43, ptr %basic_arc13, align 8, !llfi_index !111does not have any valid registers for fault injection

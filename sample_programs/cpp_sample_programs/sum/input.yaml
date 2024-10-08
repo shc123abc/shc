@@ -2,15 +2,15 @@ timeOut: 10
 
 compileOption:
     instSelMethod:
-      - insttype:
-          include:
-            - load
-            - add
+      # - insttype:
+      #     include:
+      #       - load
+      #       - add
       - funcname:
           include: 
-            - all
-          exclude:
-            - sum2
+          #   - all
+          # exclude:
+            - sum
 
     regSelMethod: regloc
     regloc: dstreg

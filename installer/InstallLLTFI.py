@@ -140,16 +140,16 @@ def checkDependencies():
 # Clone the LLVM, ONNX-MLIR and LLTFI repos
 def downloadSource():
       # LLTFI
-      os.system('git clone https://github.com/DependableSystemsLab/LLTFI.git')
+    #   os.system('git clone https://ghproxy.com/https://github.com/DependableSystemsLab/LLTFI.git')
  
       # LLVM
-      os.system('git clone https://github.com/llvm/llvm-project.git')
+      os.system('git clone https://ghproxy.com/https://github.com/llvm/llvm-project.git')
       os.chdir('llvm-project')
       os.system('git checkout 9778ec057cf4')
       os.chdir(os.path.join('..'))
 
       # onnx-mlir
-      os.system('git clone --recursive https://github.com/DependableSystemsLab/onnx-mlir-lltfi.git')
+      os.system('git clone --recursive https://ghproxy.com/https://github.com/DependableSystemsLab/onnx-mlir-lltfi.git')
       os.chdir('onnx-mlir-lltfi')
       os.system('git checkout LLTFI')
       os.chdir(os.path.join('..'))
@@ -169,57 +169,57 @@ def CheckDirExists(dir):
 # Build and install LLVM 15.0, onnx-mlir and LLTFI
 def buildSource():
     # Build and install LLVM
-    if CheckDirExists('llvm-project'):
-        os.chdir("llvm-project")
-        if (not CheckDirExists('build')): 
-            os.mkdir("build")
-        os.chdir("build")
-        if (not os.path.exists("CMAKESUCCESS")):
-            print("Running cmake for LLVM:")
-            p = subprocess.call(["cmake", "-G", "Ninja", "../llvm", "-DLLVM_ENABLE_PROJECTS='clang;mlir'","-DLLVM_BUILD_TESTS=ON", "-DLLVM_TARGETS_TO_BUILD='host'", "-DLLVM_ENABLE_ASSERTIONS=ON", "-DLLVM_ENABLE_RTTI=ON"])
-            p1 = subprocess.call(["cmake", "--build", ".", "--target", "clang", "check-mlir", "mlir-translate", "opt", "llc", "lli", "llvm-dis", "llvm-link", "-j1" ])
-            if p != 0 or p1 != 0:
-                sys.exit(p)
-            Touch("CMAKESUCCESS")
+    # if CheckDirExists('llvm-project'):
+    #     os.chdir("llvm-project")
+    #     if (not CheckDirExists('build')): 
+    #         os.mkdir("build")
+    #     os.chdir("build")
+    #     if (not os.path.exists("CMAKESUCCESS")):
+    #         print("Running cmake for LLVM:")
+    #         p = subprocess.call(["cmake", "-G", "Ninja", "../llvm", "-DLLVM_ENABLE_PROJECTS='clang;mlir'","-DLLVM_BUILD_TESTS=ON", "-DLLVM_TARGETS_TO_BUILD='host'", "-DLLVM_ENABLE_ASSERTIONS=ON", "-DLLVM_ENABLE_RTTI=ON"])
+    #         p1 = subprocess.call(["cmake", "--build", ".", "--target", "clang", "check-mlir", "mlir-translate", "opt", "llc", "lli", "llvm-dis", "llvm-link", "-j1" ])
+    #         if p != 0 or p1 != 0:
+    #             sys.exit(p)
+    #         Touch("CMAKESUCCESS")
 
-        if (not os.path.exists("MAKESUCCESS")):
-            print("Running make for LLVM")
-            p = subprocess.call(["ninja", "install", "-j1"])
-            if p != 0:
-                sys.exit(p)
-            Touch("MAKESUCCESS")
-        os.chdir(os.path.join('../..'))
+    #     if (not os.path.exists("MAKESUCCESS")):
+    #         print("Running make for LLVM")
+    #         p = subprocess.call(["ninja", "install", "-j1"])
+    #         if p != 0:
+    #             sys.exit(p)
+    #         Touch("MAKESUCCESS")
+    #     os.chdir(os.path.join('../..'))
 
 
-    else:
-        print("LLVM source code missing. Run the installer script without -nD option")
+    # else:
+    #     print("LLVM source code missing. Run the installer script without -nD option")
 
     # Build and install ONNX-MLIR 
-    if CheckDirExists('onnx-mlir'):
-        cwd = os.getcwd()
-        os.environ['MLIR_DIR'] = cwd + '/llvm-project/build/lib/cmake/mlir'
-        os.chdir("onnx-mlir")
-        if (not CheckDirExists('build')):
-            os.mkdir("build")
-        os.chdir("build")
-        if (not os.path.exists("CMAKESUCCESS")):
-            print("Running cmake for ONNX-MLIR:")
-            p = subprocess.call(["cmake", "-G", "Ninja", "-DCMAKE_CXX_COMPILER=/usr/bin/c++", "-DMLIR_DIR=${MLIR_DIR}", ".."])
-            p1 = subprocess.call(["cmake", "--build", ".", "-j1" ])
-            if p != 0 or p1 != 0:
-                sys.exit(p)
-            Touch("CMAKESUCCESS")
+    # if CheckDirExists('onnx-mlir'):
+    #     cwd = os.getcwd()
+    #     os.environ['MLIR_DIR'] = cwd + '/llvm-project/build/lib/cmake/mlir'
+    #     os.chdir("onnx-mlir")
+    #     if (not CheckDirExists('build')):
+    #         os.mkdir("build")
+    #     os.chdir("build")
+    #     if (not os.path.exists("CMAKESUCCESS")):
+    #         print("Running cmake for ONNX-MLIR:")
+    #         p = subprocess.call(["cmake", "-G", "Ninja", "-DCMAKE_CXX_COMPILER=/usr/bin/g++", "-DMLIR_DIR=${MLIR_DIR}", ".."])
+    #         p1 = subprocess.call(["cmake", "--build", ".", "-j1" ])
+    #         if p != 0 or p1 != 0:
+    #             sys.exit(p)
+    #         Touch("CMAKESUCCESS")
 
-        if (not os.path.exists("MAKESUCCESS")):
-            print("Running make for ONNX-MLIR")
-            p = subprocess.call(["ninja", "install", "-j1"])
-            if p != 0:
-                sys.exit(p)
-            Touch("MAKESUCCESS")
-        os.chdir(os.path.join('../..'))
+    #     if (not os.path.exists("MAKESUCCESS")):
+    #         print("Running make for ONNX-MLIR")
+    #         p = subprocess.call(["ninja", "install", "-j1"])
+    #         if p != 0:
+    #             sys.exit(p)
+    #         Touch("MAKESUCCESS")
+    #     os.chdir(os.path.join('../..'))
 
-    else:
-        print("ONNX-MLIR source missing. Run the installer script without -nD option")
+    # else:
+    #     print("ONNX-MLIR source missing. Run the installer script without -nD option")
 
 
     # Build LLTFI
@@ -280,7 +280,7 @@ def DownloadFile(url, destinationDirectory, desc=None):
 
 #  Download and install libprotoc v.3.17.2
 def downloadAndInstallProtobuf():
-    DownloadFile("https://github.com/protocolbuffers/protobuf/releases/download/v3.17.2/protobuf-all-3.17.2.zip", ".")
+    DownloadFile("https://ghproxy.com/https://github.com/protocolbuffers/protobuf/releases/download/v3.17.2/protobuf-all-3.17.2.zip", ".")
     os.system("unzip protobuf-all-3.17.2.zip")
     os.chdir("protobuf-3.17.2")
     os.system("./configure")
@@ -293,7 +293,10 @@ def downloadAndInstallProtobuf():
 # Run LLTFI regression tests
 def runTests():
   LLFI_BUILD_DIR = os.path.dirname(os.path.realpath(__file__))
-  subprocess.call(["python3", LLFI_BUILD_DIR + "/LLTFI/build/test_suite/SCRIPTS/llfi_test", "--all", "--threads", "2", "--verbose"])
+  # print(["python3", LLFI_BUILD_DIR + "/../../LLTFI/build/test_suite/SCRIPTS/llfi_test", "--all_trace_tools_tests", "--threads", "2", "--verbose"])
+  # subprocess.call(["python3", LLFI_BUILD_DIR + "/../../LLTFI/build/test_suite/SCRIPTS/llfi_test", "--all_trace_tools_tests", "--threads", "2", "--verbose"])
+  print(["python3", LLFI_BUILD_DIR + "/../../LLTFI/build/test_suite/SCRIPTS/llfi_test", "--all_hardware_faults", "--threads", "2", "--verbose"])
+  subprocess.call(["python3", LLFI_BUILD_DIR + "/../../LLTFI/build/test_suite/SCRIPTS/llfi_test", "--all_hardware_faults", "--threads", "2", "--verbose"])
 
 parser = argparse.ArgumentParser(
     description=("Installer for UBC DependableSystemsLab's LLTFI"),

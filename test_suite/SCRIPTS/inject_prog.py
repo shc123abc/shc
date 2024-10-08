@@ -67,6 +67,10 @@ def callLLFI(work_dir, target_IR, prog_input):
 		return -1, None
 	with open("llfi.test.log.instrument.txt", 'w', buffering=1) as log:
 		p = subprocess.Popen([instrument_script, "--readable", "-lpthread", target_IR], stdout=log, stderr=log)
+		# p = subprocess.Popen([instrument_script, "--readable", "-lpthread", target_IR], stdout=log, stderr=log)
+  
+		print([instrument_script, "--readable", "-lpthread", target_IR])
+  
 		p.wait()
 		if p.returncode != 0:
 			print ("ERROR: instrument failed for:", work_dir, target_IR)
@@ -142,6 +146,8 @@ def callBatchLLFI(work_dir, target_IR, prog_input):
 	with open("llfi.test.log.instrument.txt", 'w', buffering=1) as log:
 		p = subprocess.Popen([batchinstrument_script, "--readable", "-lpthread", target_IR], stdout=log, stderr=log)
 		p.wait()
+		
+		print([batchinstrument_script, "--readable", "-lpthread", target_IR])
 		if p.returncode != 0:
 			print ("ERROR: batchInstrument failed for:", work_dir, target_IR)
 			return -1, None
@@ -202,7 +208,7 @@ def inject_prog(num_threads, *prog_list):
 	suite = {}
 	script_dir = os.path.dirname(os.path.realpath(__file__))
 	llfi_bin_dir = os.path.join(script_dir, '../../bin')
-	instrument_script = os.path.join(llfi_bin_dir, "instrument")
+	instrument_script = os.path.join(llfi_bin_dir, "instrument.py")
 	profile_script = os.path.join(llfi_bin_dir, "profile")
 	injectfault_script = os.path.join(llfi_bin_dir, "injectfault")
 	batchinstrument_script = os.path.join(llfi_bin_dir, "batchInstrument")
@@ -213,21 +219,22 @@ def inject_prog(num_threads, *prog_list):
 	testsuite_dir = os.path.join(script_dir, os.pardir)
 	with open(os.path.join(testsuite_dir, "test_suite.yaml")) as f:
 		try:
-			suite = yaml.load(f)
+			print(os.path.join(testsuite_dir, "test_suite.yaml"))
+   			suite = yaml.load(f)
 		except:
 			print("ERROR: Unable to load yaml file: test_suite.yaml", file=sys.stderr)
 			return -1
 
 	work_dict = {}
-	for test in suite["SoftwareFaults"]:
-		if len(prog_list) == 0 or test in prog_list or "SoftwareFaults" in prog_list:
-			work_dict["./SoftwareFaults/"+test] = suite["SoftwareFaults"][test]
+	# for test in suite["SoftwareFaults"]:
+	# 	if len(prog_list) == 0 or test in prog_list or "SoftwareFaults" in prog_list:
+	# 		work_dict["./SoftwareFaults/"+test] = suite["SoftwareFaults"][test]
 	for test in suite["HardwareFaults"]:
 		if len(prog_list) == 0 or test in prog_list or "HardwareFaults" in prog_list:
 			work_dict["./HardwareFaults/"+test] = suite["HardwareFaults"][test]
-	for test in suite["BatchMode"]:
-		if len(prog_list) == 0 or test in prog_list or "BatchMode" in prog_list:
-			work_dict["./BatchMode/"+test] = suite["BatchMode"][test]
+	# for test in suite["BatchMode"]:
+	# 	if len(prog_list) == 0 or test in prog_list or "BatchMode" in prog_list:
+	# 		work_dict["./BatchMode/"+test] = suite["BatchMode"][test]
 	
 	running_list = []
 	exitcode_list = []

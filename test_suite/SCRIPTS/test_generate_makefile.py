@@ -56,7 +56,8 @@ def test_generate_makefile(*test_list):
 	r = 0
 	suite = {}
 	script_dir = os.path.dirname(os.path.realpath(__file__))
-	llfi_tools_dir = os.path.join(script_dir, os.pardir, os.pardir, 'tools')
+	llfi_tools_dir = os.path.join(script_dir, os.pardir, os.pardir, 'build/tools')
+	print(llfi_tools_dir)
 	generate_makefile_script = os.path.join(llfi_tools_dir, 'GenerateMakefile')
 	sys.path.append(os.path.join(script_dir, os.pardir, os.pardir, 'config'))
 	import llvm_paths

@@ -567,12 +567,13 @@ def main(args):
         errorfile = errordir + "/errorfile-" + "run-"+run_id
         execlist = [fi_exe]
 
+
         if('fi_cycle' not in locals() and 'fi_random_seed' in locals()):
           random.seed(fi_random_seed)
 
         if need_to_calc_fi_cycle:
           ##BEHROOZ: I changed the below line to the current one to fix the fi_cycle
-          fi_cycle = random.randint(1, int(totalcycles))
+          fi_cycle = random.randint(1, int(totalcycles)) 
           ##fi_cycle = random.randint(0, int(totalcycles) - 1)
 
         ficonfig_File = open("llfi.config.runtime.txt", 'w')
@@ -639,6 +640,10 @@ def main(args):
         # print run index before executing. Comma removes newline for prettier
         # formatting
         execlist.extend(optionlist)
+        
+        print(execlist)
+        print(optionlist)
+        print('this is execlist')
         ret = execute(execlist, timeout)
         if ret == "timed-out":
           error_File = open(errorfile, 'w')

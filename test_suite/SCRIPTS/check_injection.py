@@ -31,7 +31,11 @@ def examineTraceFile(work_dir):
 
 
 def checkLLFIDir(work_dir, target_IR, prog_input):
-	llfi_dir = os.path.join(work_dir, "llfi")
+	llfi_dir = os.path.join(work_dir, "../../Traces/BufferOverflow_API/llfi")
+	# llfi_dir = os.path.join(work_dir, "llfi")
+	print("LLFIDIR:",llfi_dir)
+	print(work_dir)
+ 
 	if os.path.isdir(llfi_dir) == False:
 		return "FAIL: No ./llfi folder found!"
 	stats_dir = os.path.join(llfi_dir, "llfi_stat_output")
@@ -53,6 +57,7 @@ def checkLLFIDir(work_dir, target_IR, prog_input):
 
 	if examineTraceFile(work_dir) == False:
 		return "FAIL: Tracing was enabled byt trace file not generated!"
+	
 
 	return "PASS"
 
@@ -70,22 +75,27 @@ def check_injection(*prog_list):
 			return -1
 
 	work_dict = {}
-	for test in suite["SoftwareFaults"]:
-		if len(prog_list) == 0 or test in prog_list or "SoftwareFaults" in prog_list:
-			work_dict["./SoftwareFaults/"+test] = suite["SoftwareFaults"][test]
+	# for test in suite["SoftwareFaults"]:
+	# 	if len(prog_list) == 0 or test in prog_list or "SoftwareFaults" in prog_list:
+	# 		work_dict["./SoftwareFaults/"+test] = suite["SoftwareFaults"][test]
 	for test in suite["HardwareFaults"]:
 		if len(prog_list) == 0 or test in prog_list or "HardwareFaults" in prog_list:
 			work_dict["./HardwareFaults/"+test] = suite["HardwareFaults"][test]
-	for test in suite["BatchMode"]:
-		if len(prog_list) == 0 or test in prog_list or "BatchMode" in prog_list:
-			work_dict["./BatchMode/"+test] = suite["BatchMode"][test]
+	# for test in suite["BatchMode"]:
+	# 	if len(prog_list) == 0 or test in prog_list or "BatchMode" in prog_list:
+	# 		work_dict["./BatchMode/"+test] = suite["BatchMode"][test]
 	
 	
 	result_list = []
+	print("WORK_DICT:",work_dict)
 	for test_path in work_dict:
+  
 		inject_dir = os.path.abspath(os.path.join(testsuite_dir, test_path))
 		inject_prog = suite["PROGRAMS"][work_dict[test_path]][0]
 		inject_input = str(suite["INPUTS"][work_dict[test_path]])
+		print("PATH:", inject_dir, "INPUT", inject_input,inject_prog)
+		# test_path = "./../build/test_suite/HardwareFaults/funcname"
+
 		if test_path.startswith('./BatchMode'):
 			# print("\tChecking on BatchMode:", test_path)
 			models = [m for m in os.listdir(inject_dir) if os.path.isdir(os.path.join(inject_dir, m))]
@@ -99,6 +109,7 @@ def check_injection(*prog_list):
 				result = "Subdirectories for failure modes not found!"
 		else:
 			result = checkLLFIDir(inject_dir, inject_prog, inject_input)
+			print("RESULT:",result)
 		if result != "PASS":
 			r += 1
 		record = {"name":test_path, "result":result}

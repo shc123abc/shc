@@ -152,7 +152,9 @@ def startTestRoutine():
 		elif options['all'] or options['all_fault_injections']:
 			pass
 		verbosePrint(' '.join(execlist))
+		
 		p = subprocess.Popen(execlist, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		print(execlist)
 		p.wait()
 		r = p.returncode
 		if r != 0:
@@ -196,6 +198,7 @@ def startTestRoutine():
 		elif options['all'] or options['all_fault_injections']:
 			pass
 		verbosePrint('Calling: check_injection.check_injection(' + ' '.join(prog_list) + ')')
+		print("Check:",prog_list)
 		check_injection_returncode, injection_result_list = check_injection.check_injection(*prog_list)
 
 	## run trace tools's tests
@@ -223,6 +226,7 @@ def startTestRoutine():
 	## collect the results
 	total = 0
 	passed = 0
+	print(injection_result_list)
 	if len(injection_result_list) > 0:
 		print ("==== Check Injection Result ====")
 		for record in injection_result_list:

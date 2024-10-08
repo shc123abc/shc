@@ -13,27 +13,38 @@ def deploy_prog(*prog_list):
 	script_dir = os.path.dirname(os.path.realpath(__file__))
 	testsuite_dir = os.path.join(script_dir, os.pardir)
 	with open(os.path.join(testsuite_dir, "test_suite.yaml")) as f:
+		print("F:",f)
 		try:
-			suite = yaml.load(f)
+   			suite = yaml.load(f, Loader=yaml.FullLoader)
 		except:
 			print("ERROR: Unable to load yaml file: test_suite.yaml", file=sys.stderr)
 			return -1
 
 	work_dict = {}
-	for test in suite["SoftwareFaults"]:
-		if len(prog_list) == 0 or test in prog_list or "SoftwareFaults" in prog_list:
-			work_dict["./SoftwareFaults/"+test] = suite["SoftwareFaults"][test]
+	print(prog_list)
+	print(suite)
+	print(suite["HardwareFaults"])
+	# print(suite["SoftwareFaults"])
+	# print(suite["BatchMode"])
+	# for test in suite["SoftwareFaults"]:
+	# 	if len(prog_list) == 0 or test in prog_list or "SoftwareFaults" in prog_list:
+	# 		work_dict["./SoftwareFaults/"+test] = suite["SoftwareFaults"][test]
 	for test in suite["HardwareFaults"]:
 		if len(prog_list) == 0 or test in prog_list or "HardwareFaults" in prog_list:
 			work_dict["./HardwareFaults/"+test] = suite["HardwareFaults"][test]
-	for test in suite["BatchMode"]:
-		if len(prog_list) == 0 or test in prog_list or "BatchMode" in prog_list:
-			work_dict["./BatchMode/"+test] = suite["BatchMode"][test]
-	
+	# for test in suite["BatchMode"]:
+	# 	if len(prog_list) == 0 or test in prog_list or "BatchMode" in prog_list:
+	# 		work_dict["./BatchMode/"+test] = suite["BatchMode"][test]
+ 
+	print(work_dict)
+	print(testsuite_dir)
 	for test_path in work_dict:
 		src_dir = os.path.join(testsuite_dir, "PROGRAMS", work_dict[test_path])
 		req_files = [f for f in suite["PROGRAMS"][work_dict[test_path]]]
 		dst_dir = os.path.join(testsuite_dir, test_path)
+  
+		print(req_files)
+		print(src_dir, dst_dir)
 		for f in req_files:
 			src_path = os.path.join(src_dir, f)
 			try:

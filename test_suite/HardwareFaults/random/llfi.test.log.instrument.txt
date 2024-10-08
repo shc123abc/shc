@@ -1,0 +1,23 @@
+ERROR: llfi already exists under /home/smz/shc/LLTFI/test_suite/HardwareFaults/random, you can either specify a different directory for --dir or remove llfi from /home/smz/shc/LLTFI/test_suite/HardwareFaults/random
+
+
+instrument.py takes a single IR file as input and generates IR files (and executables, depending on the -IRonly option) with instrumented profiling and fault injection function calls
+
+Usage: instrument.py [OPTIONS] <source IR file>
+
+List of options:
+
+--dir <relative directory>: Generate the instrumented IRs and executables to '<directory of source IR file>/<relative directory>', default: llfi
+-L <library directory>:     Add <library directory> to the search directories for -l
+-l<library>:                link <library>
+--readable:                 Generate human-readable IR files
+--IRonly:                   Only generate the instrumented IR files, and you will do the linking and create the executables manually
+--verbose:                  Show verbose information
+--help(-h):                 Show help information
+--use-ml-specific-rt        Use ML-Specific FI runtime, that statically-links with the ML application to speedup the FI.
+--enable-ML-FI-stats        Enable FI statistics for ML applications.
+
+Prerequisite:
+You need to have 'input.yaml' under the same directory as <source IR file>, which contains appropriate options for LLFI
+
+/home/smz/shc/LLTFI/bin

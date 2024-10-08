@@ -31,9 +31,12 @@ def build_prog(*prog_list):
 	else:
 		cwd = os.path.abspath(os.path.curdir)
 		for prog in prog_list:
+			print("proglist",prog_list)
 			## build prog
 			if prog not in list(suite["PROGRAMS"].keys()):
 				print("WARNING: program:", prog, "not defined in test_suite.yaml\n", file=sys.stderr)
+				print("PROG:",prog)
+				print("SUITE:",suite)
 				continue
 			pd = os.path.join(testsuite_dir, "PROGRAMS", prog)
 			os.chdir(pd)
